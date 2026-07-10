@@ -1,0 +1,14 @@
+namespace Architecture.Contracts
+{
+  using System;
+
+  public interface IGameStateContext {}
+
+  public interface ICommand
+  {
+    Guid CommandId{get;}
+    int TickId{get;}
+    void Execute(IGameStateContext context);
+    byte[] Serialize();
+  }
+}
