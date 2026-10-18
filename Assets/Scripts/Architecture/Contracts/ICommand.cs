@@ -4,7 +4,7 @@ namespace Architecture.Contracts
 
   public interface ICommand
   {
-    byte CommandTypeId{get;}
+    CommandTypeId CommandTypeId{get;}
     byte PlayerId{get;}
     int TickId{get;}
 
