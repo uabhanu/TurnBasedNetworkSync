@@ -1,5 +1,6 @@
 namespace Runtime.Core.Simulation
 {
+  using Architecture.Core.Simulation;
   using System;
   using System.Collections.Generic;
 
