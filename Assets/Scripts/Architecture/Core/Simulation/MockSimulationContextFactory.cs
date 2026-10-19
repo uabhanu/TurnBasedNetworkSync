@@ -1,5 +1,7 @@
 namespace Runtime.Core.Simulation
 {
+  using Architecture.Core.Simulation;
+
   /// <summary>
   /// Factory providing pre-populated deterministic state mock instances for tests and local simulation integration.
   /// </summary>

@@ -1,5 +1,6 @@
 namespace Tests.Editor.Simulation
 {
+  using Architecture.Core.Simulation;
   using NUnit.Framework;
   using Runtime.Core.Simulation;
 
