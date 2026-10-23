@@ -1,11 +1,11 @@
-namespace Runtime.Core.Simulation
+namespace Architecture.Core.Simulation
 {
-  using System;
+  using Contracts;
 
   /// <summary>
   /// Contract representing the deterministic game state context passed into commands during execution.
   /// </summary>
-  public interface ISimulationContext
+  public interface ISimulationContext : IGameStateContext
   {
     uint CurrentTick{get;}
     byte ActivePlayerId{get;}
@@ -22,33 +22,5 @@ namespace Runtime.Core.Simulation
     void AdvanceTurn(byte nextPlayerId);
     void ResetTo(in ISimulationContext sourceContext);
     void SetTick(uint tick);
-  }
-
-  /// <summary>
-  /// Value-type entity snapshot matching zero-allocation network delta requirements.
-  /// </summary>
-  public readonly struct EntityState : IEquatable<EntityState>
-  {
-    public readonly ushort EntityId;
-    public readonly byte OwnerId;
-    public readonly byte NodeSector;
-    public readonly byte NodeIndex;
-    public readonly ushort Health;
-    public readonly ushort Energy;
-
-    public EntityState(ushort entityId , byte ownerId , byte nodeSector , byte nodeIndex , ushort health , ushort energy)
-    {
-      EntityId = entityId;
-      OwnerId = ownerId;
-      NodeSector = nodeSector;
-      NodeIndex = nodeIndex;
-      Health = health;
-      Energy = energy;
-    }
-
-    public bool Equals(EntityState other) { return EntityId == other.EntityId && OwnerId == other.OwnerId && NodeSector == other.NodeSector && NodeIndex == other.NodeIndex && Health == other.Health && Energy == other.Energy; }
-
-    public override bool Equals(object obj) => obj is EntityState other && Equals(other);
-    public override int GetHashCode() => HashCode.Combine(EntityId , OwnerId , NodeSector , NodeIndex , Health , Energy);
   }
 }

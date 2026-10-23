@@ -6,10 +6,13 @@ namespace Architecture.Contracts
 {
   using System;
   using System.Runtime.InteropServices;
-  
+
   [StructLayout(LayoutKind.Sequential , Pack = 1)]
   public readonly struct NetworkStateDelta : IEquatable<NetworkStateDelta>
   {
+    private const int FnvOffsetBasis = unchecked((int)2166136261);
+    private const int FnvPrime = 16777619;
+
     public uint Tick{get;}
     public byte TargetId{get;}
     public byte StateKey{get;}
@@ -25,25 +28,25 @@ namespace Architecture.Contracts
 
     public bool Equals(NetworkStateDelta other) { return Tick == other.Tick && TargetId == other.TargetId && StateKey == other.StateKey && Value == other.Value; }
 
-    public override bool Equals(object obj) { return obj is NetworkStateDelta other && Equals(other); }
+    public override bool Equals(object obj) => obj is NetworkStateDelta other && Equals(other);
 
     public override int GetHashCode()
     {
       unchecked
       {
-        var hash = (int)2166136261;
-        hash = (hash * 16777619) ^ (int)Tick;
-        hash = (hash * 16777619) ^ TargetId.GetHashCode();
-        hash = (hash * 16777619) ^ StateKey.GetHashCode();
-        hash = (hash * 16777619) ^ Value.GetHashCode();
+        var hash = FnvOffsetBasis;
+        hash = (hash * FnvPrime) ^ (int)Tick;
+        hash = (hash * FnvPrime) ^ TargetId.GetHashCode();
+        hash = (hash * FnvPrime) ^ StateKey.GetHashCode();
+        hash = (hash * FnvPrime) ^ Value.GetHashCode();
         return hash;
       }
     }
 
-    public static bool operator ==(NetworkStateDelta left , NetworkStateDelta right) { return left.Equals(right); }
+    public static bool operator ==(NetworkStateDelta left , NetworkStateDelta right) => left.Equals(right);
 
-    public static bool operator !=(NetworkStateDelta left , NetworkStateDelta right) { return !left.Equals(right); }
+    public static bool operator !=(NetworkStateDelta left , NetworkStateDelta right) => !left.Equals(right);
 
-    public override string ToString() { return $"[Delta Tick:{Tick} Target:{TargetId} Key:{StateKey} Val:{Value}]"; }
+    public override string ToString() => $"[Delta Tick:{Tick} Target:{TargetId} Key:{StateKey} Val:{Value}]";
   }
 }
