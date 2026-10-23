@@ -1,7 +1,5 @@
 namespace Architecture.Contracts
 {
-  public interface IGameStateContext {}
-
   public interface ICommand
   {
     CommandTypeId CommandTypeId{get;}
