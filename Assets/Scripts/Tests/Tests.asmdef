@@ -2,9 +2,11 @@
     "name": "Tests",
     "rootNamespace": "",
     "references": [
-        "UnityEngine.TestRunner",
+        "Architecture",
+        "Obvious.Soap",
+        "Runtime",
         "UnityEditor.TestRunner",
-        "Architecture"
+        "UnityEngine.TestRunner"
     ],
     "includePlatforms": [
         "Editor"

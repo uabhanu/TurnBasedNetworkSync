@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9870f6ba6d1f4444f95e4a73ed47cfdb, type: 3}
+  m_Name: SE_TickDispatched
+  m_EditorClassIdentifier: Architecture::Architecture.Events.ScriptableEventUint
+  TagIndex: 0
+  Description: 
+  _debugLogEnabled: 0
+  _debugValue: 0
