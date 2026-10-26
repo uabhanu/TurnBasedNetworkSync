@@ -1,6 +1,7 @@
 namespace Architecture.Core.Simulation
 {
   using Contracts;
+  using Events;
   using System;
   using System.Collections.Generic;
   using UnityEngine;
@@ -14,6 +15,8 @@ namespace Architecture.Core.Simulation
     private readonly List<ICommand> _executedHistory = new();
 
     [SerializeField] private bool autoStepOnUpdate;
+    [SerializeField] private ScriptableEventICommand commandSubmittedEvent;
+    [SerializeField] private ScriptableEventUint tickDispatchedEvent;
 
     public bool IsProcessing{get; private set;}
     public uint CurrentTick{get; private set;}
@@ -21,6 +24,9 @@ namespace Architecture.Core.Simulation
     public event Action<ICommand> OnCommandExecuting;
     public event Action<ICommand , bool> OnCommandExecuted;
     public event Action<uint> OnTickCompleted;
+
+    public ScriptableEventUint TickDispatchedEvent{get => tickDispatchedEvent; set => tickDispatchedEvent = value;}
+    public ScriptableEventICommand CommandSubmittedEvent{get => commandSubmittedEvent; set => commandSubmittedEvent = value;}
 
     /// <summary>
     /// Initializes the pipeline with the required game state context.
@@ -30,35 +36,17 @@ namespace Architecture.Core.Simulation
 
     public void EnqueueCommand(ICommand command)
     {
-      if(command == null)
-      {
-        Debug.LogWarning("[LocalExecutionPipeline] Attempted to enqueue a null command.");
-        return;
-      }
-
-      if(_processor == null)
-      {
-        Debug.LogError("[LocalExecutionPipeline] Pipeline has not been initialized with an IGameStateContext!");
-        return;
-      }
 
       _processor.Enqueue(command);
+
+      if(commandSubmittedEvent != null)
+      {
+        commandSubmittedEvent.Raise(command);
+      }
     }
 
     public void StepSimulation()
     {
-      if(IsProcessing)
-      {
-        Debug.LogWarning("[LocalExecutionPipeline] Re-entrant simulation step detected. Aborting step.");
-        return;
-      }
-
-      if(_processor == null)
-      {
-        Debug.LogError("[LocalExecutionPipeline] Cannot step simulation: CommandProcessor is not initialized.");
-        return;
-      }
-
       IsProcessing = true;
       int processedCount = 0;
 
@@ -66,13 +54,17 @@ namespace Architecture.Core.Simulation
       {
         while(_processor.QueuedCount > 0 && processedCount < _maxCommandsPerTick)
         {
-          // CommandProcessor.ProcessNext executes the command directly internally
           bool executed = _processor.ProcessNext();
           if(executed) { processedCount++; }
         }
 
         CurrentTick++;
         OnTickCompleted?.Invoke(CurrentTick);
+
+        if(tickDispatchedEvent != null)
+        {
+          tickDispatchedEvent.Raise(CurrentTick);
+        }
       }
       catch(Exception ex) { Debug.LogError($"[LocalExecutionPipeline] Error stepping simulation tick {CurrentTick}: {ex.Message}\n{ex.StackTrace}"); }
       finally { IsProcessing = false; }
