@@ -1,14 +1,16 @@
 namespace Tests
 {
-  using System;
   using Architecture;
   using Architecture.Contracts;
   using NUnit.Framework;
+  using System;
 
   public class CommandProcessorTests
   {
     private const byte DefaultPlayerId = 0;
+    private const int DefaultSequenceTag = 0;
     private const int DefaultTickId = 1;
+    private const long DefaultTimestamp = 0L;
     private const int InitialContextValue = 0;
 
     private class MockGameStateContext : IGameStateContext
@@ -21,12 +23,16 @@ namespace Tests
       public MockIncrementCommand(byte playerId = DefaultPlayerId , int tickId = DefaultTickId)
       {
         PlayerId = playerId;
+        SequenceTag = DefaultSequenceTag;
         TickId = tickId;
+        Timestamp = DefaultTimestamp;
       }
 
       public CommandTypeId CommandTypeId => CommandTypeId.MockIncrement;
       public byte PlayerId{get;}
+      public int SequenceTag{get;}
       public int TickId{get;}
+      public long Timestamp{get;}
 
       public void Execute(IGameStateContext context)
       {

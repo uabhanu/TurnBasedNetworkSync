@@ -31,7 +31,9 @@ namespace Tests.PlayMode.Simulation
     {
       public CommandTypeId CommandTypeId{get;} = CommandTypeId.MockIncrement;
       public byte PlayerId{get;} = SimulationConstants.DefaultInitialPlayerId;
+      public int SequenceTag{get;}
       public int TickId{get;} = (int)SimulationConstants.InitialTick;
+      public long Timestamp{get;}
 
       public void Execute(IGameStateContext context) {}
       public byte[] Serialize() => System.Array.Empty<byte>();
