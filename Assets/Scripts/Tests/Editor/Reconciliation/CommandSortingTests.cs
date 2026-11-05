@@ -1,23 +1,24 @@
-using System.Collections.Generic;
-using Architecture.Contracts;
-using Architecture.Core.Reconciliation;
-using NUnit.Framework;
-
 namespace Tests.Editor.Reconciliation
 {
+  using Architecture.Contracts;
+  using Architecture.Core.Reconciliation;
+  using NUnit.Framework;
+  using System;
+  using System.Collections.Generic;
+
   [TestFixture]
   public class CommandSortingTests
   {
     private class TestCommand : ICommand
     {
-      public CommandTypeId CommandTypeId { get; set; } = default;
+      public CommandTypeId CommandTypeId{get; set;} = default;
       public byte PlayerId{get; set;}
       public int TickId{get; set;}
       public long Timestamp{get; set;}
       public int SequenceTag{get; set;}
 
       public void Execute(IGameStateContext context) {}
-      public byte[] Serialize() => System.Array.Empty<byte>();
+      public byte[] Serialize() { return Array.Empty<byte>(); }
     }
 
     [Test]
