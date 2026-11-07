@@ -10,3 +10,9 @@ dotnet_analyzer_diagnostic.severity = none # https://github.com/JetBrains/reshar
 csharp_using_directive_placement = inside_namespace:warning
 resharper_csharp_using_directive_placement = inside_namespace
 resharper_csharp_optimize_usings = true
+
+# Suppress Unity serialization analyzers on third-party vendor code
+dotnet_diagnostic.UAC1002.severity = none
+dotnet_diagnostic.UAC1009.severity = none
+dotnet_diagnostic.uac1002.severity = none
+dotnet_diagnostic.uac1009.severity = none
